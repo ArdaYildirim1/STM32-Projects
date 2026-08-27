@@ -1,3 +1,10 @@
+# STM32CubeIDE Specific
+Debug/
+Release/
+*.bin
+*.list
+.mxproject
+
 # Prerequisites
 *.d
 
@@ -53,3 +60,5 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+
