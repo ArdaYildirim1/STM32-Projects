@@ -4,6 +4,51 @@
 #include <stdint.h>
 
 #define  __vo volatile
+
+/****************************
+ * Processor Spesific Details
+ ****************************/
+
+/*
+ * Arm Cortex Mx Processor NVIC ISERx register Addresses
+ */
+
+#define  NVIC_ISER0   ((__vo uint32_t*)0xE000E100)
+#define  NVIC_ISER1   ((__vo uint32_t*)0xE000E104)
+#define  NVIC_ISER2   ((__vo uint32_t*)0xE000E108)
+#define  NVIC_ISER3   ((__vo uint32_t*)0xE000E10C)
+#define  NVIC_ISER4   ((__vo uint32_t*)0xE000E110)
+#define  NVIC_ISER5   ((__vo uint32_t*)0xE000E114)
+#define  NVIC_ISER6   ((__vo uint32_t*)0xE000E118)
+#define  NVIC_ISER7   ((__vo uint32_t*)0xE000E11C)
+
+
+/*
+ * Arm Cortex Mx Processor NVIC ICERx register Addresses
+ */
+
+#define  NVIC_ICER0   			((__vo uint32_t*)0XE000E180)
+#define  NVIC_ICER1   			((__vo uint32_t*)0XE000E184)
+#define  NVIC_ICER2   			((__vo uint32_t*)0XE000E188)
+#define  NVIC_ICER3   			((__vo uint32_t*)0XE000E18C)
+#define  NVIC_ICER4   			((__vo uint32_t*)0XE000E190)
+#define  NVIC_ICER5   			((__vo uint32_t*)0XE000E194)
+#define  NVIC_ICER6   			((__vo uint32_t*)0XE000E198)
+#define  NVIC_ICER7   			((__vo uint32_t*)0xE000E19C)
+
+/*
+ * Arm cortex Mx Processor Priority Register Addresses Calculation
+ */
+#define NVIC_PR_BASEADDR		((__vo uint32_t*)0xE000E400)
+
+/*
+ * ARM Cortex Mx Processor number of priority bits implemented in Priority Register
+ */
+#define NO_PR_BITS_IMPLEMENTED	4
+
+
+
+
 #define FLASH_BASEADDR        0x08000000U
 #define SRAM1_BASEADDR        0x20000000U
 #define SRAM2_BASEADDR        0x2001C000U  /* SRAM1 + 112KB */
@@ -58,7 +103,21 @@
 
 
 
+/*
+ * Perpheral register definition structure for SYSCFG
+ */
 
+typedef struct
+{
+	__vo uint32_t MEMRMP;			/* offset: 0x00  */
+	__vo uint32_t PMC;				/* offset: 0x04  */
+	__vo uint32_t EXTICR[4];		/* offset: 0x08-0x14  */
+    uint32_t RESERVED1[2];      		/* offset: 0x18 and 0x1C  */
+    __vo uint32_t CMPCR;			/* offset: 0x20  */
+
+
+
+}SYSCFG_RegDef_t;
 
 
 
@@ -112,6 +171,21 @@ typedef struct
 } RCC_RegDef_t;
 
 
+/*
+ * peripheral register definition structure for EXTI
+ */
+
+typedef struct
+{
+	__vo uint32_t IMR;   	/*  */
+	__vo uint32_t EMR;  	/*  */
+	__vo uint32_t RTSR; 	/*  */
+	__vo uint32_t FTSR;   	/*  */
+	__vo uint32_t SWIER;    /*  */
+	__vo uint32_t PR;     	/*  */
+
+}EXTI_RegDef_t;
+
 
 
 #define GPIOA   ((GPIO_RegDef_t*)GPIOA_BASEADDR)
@@ -126,6 +200,10 @@ typedef struct
 
 
 #define RCC 				((RCC_RegDef_t*)RCC_BASEADDR)
+
+#define EXTI 				((EXTI_RegDef_t*)EXTI_BASEADDR)
+
+#define SYSCFG				((SYSCFG_RegDef_t*)SYSCFG_BASEADDR)
 
 
 /* Clock enable Macros for GPIOx Peripherals */
@@ -153,6 +231,10 @@ typedef struct
 /* Clock enable Macros for I2Cx Peripherals */
 #define I2C1_PCLK_EN()      ( RCC->APB1ENR |= (1 << 21) )
 
+/* Clock enable macros for SYSCFG_EXTICR */
+
+#define SYSCFG_PCLK_EN() 	 (RCC->APB2ENR |= (1 << 14))
+
 
 
 
@@ -176,8 +258,14 @@ typedef struct
 #define GPIOI_REG_RESET()  				do{(RCC->AHB1RSTR |= (1 << 8)) ;   (RCC->AHB1RSTR &= ~(1 << 8)); }while(0)
 
 
-
-
+#define GPIO_BASEADDR_TO_CODE(x)  ( (x == GPIOA) ? 0 :\
+                                    (x == GPIOB) ? 1 :\
+                                    (x == GPIOC) ? 2 :\
+                                    (x == GPIOD) ? 3 :\
+                                    (x == GPIOE) ? 4 :\
+                                    (x == GPIOF) ? 5 :\
+                                    (x == GPIOG) ? 6 :\
+                                    (x == GPIOH) ? 7 : 0 )
 
 
 // Some generic macros
@@ -189,7 +277,17 @@ typedef struct
 #define GPIO_PIN_RESET  RESET
 
 
+/*
+ * RQ (Interrupt Request) Numbers
+ */
 
+#define IRQ_NO_EXTI0 		6
+#define IRQ_NO_EXTI1 		7
+#define IRQ_NO_EXTI2 		8
+#define IRQ_NO_EXTI3 		9
+#define IRQ_NO_EXTI4 		10
+#define IRQ_NO_EXTI9_5 		23
+#define IRQ_NO_EXTI15_10 	40
 
 
 
