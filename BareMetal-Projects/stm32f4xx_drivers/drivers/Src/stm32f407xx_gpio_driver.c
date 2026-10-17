@@ -464,7 +464,7 @@ void GPIO_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority)
 	uint8_t iprx_section 	= 	IRQNumber % 4;
 
 	uint8_t shift_amount = (8* iprx_section) + (8- NO_PR_BITS_IMPLEMENTED);
-	*(NVIC_PR_BASEADDR + (iprx*4)) |= (IRQPriority << (shift_amount));
+	*(NVIC_PR_BASEADDR + (iprx)) |= (IRQPriority << (shift_amount));
 
 
 }
