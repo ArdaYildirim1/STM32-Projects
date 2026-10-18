@@ -97,9 +97,8 @@ void GPIO_PeriClockControl(GPIO_RegDef_t *pGPIOx, uint8_t EnorDi)
 	}
 }
 
-/*
- * Init and De-init
- */
+
+
 
 /********************************************************
  * @fn              - GPIO_Init
