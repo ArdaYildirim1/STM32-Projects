@@ -56,6 +56,17 @@ void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
 
 }
 
+void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi)
+{
+	if(EnOrDi == ENABLE)
+		{
+			pSPIx->SPI_CR1 |=  (1 << SPI_CR1_SSI);
+		}else
+		{
+			pSPIx->SPI_CR1 &= ~(1 << SPI_CR1_SSI);
+		}
+}
+
 
 /*********************************************************************
  * @fn      		  - SPI_Init
@@ -73,6 +84,8 @@ void SPI_PeriClockControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
  */
 void SPI_Init(SPI_Handle_t *pSPIHandle)
 {
+
+	SPI_PeriClockControl(pSPIHandle->pSPIx, ENABLE);
 
 	uint32_t tempReg =0;
 
@@ -152,6 +165,16 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName)
 	return FLAG_RESET;
 }
 
+void SPI_PeripheralControl(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
+{
+	if(EnorDi == ENABLE)
+	{
+		pSPIx->SPI_CR1 |= (1 << SPI_CR1_SPE);
+	}else
+	{
+		pSPIx->SPI_CR1 &= ~(1 << SPI_CR1_SPE);
+	}
+}
 
 /*********************************************************************
  * @fn      		  - SPI_SendData
