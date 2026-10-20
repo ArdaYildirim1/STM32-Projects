@@ -69,6 +69,35 @@ void SPI_SSIConfig(SPI_RegDef_t *pSPIx, uint8_t EnOrDi)
 
 
 /*********************************************************************
+ * @fn      		  - SPI_SSOEConfig
+ *
+ * @brief             -
+ *
+ * @param[in]         -
+ * @param[in]         -
+ * @param[in]         -
+ *
+ * @return            - none
+ *
+ * @Note              - none
+ *
+ */
+
+void SPI_SSOEConfig(SPI_RegDef_t *pSPIx, uint8_t EnorDi)
+{
+
+	if(EnorDi == ENABLE)
+			{
+				pSPIx->SPI_CR2 |=  (1 << SPI_CR2_SSOE);
+			}else
+			{
+				pSPIx->SPI_CR2 &= ~(1 << SPI_CR2_SSOE);
+			}
+
+}
+
+
+/*********************************************************************
  * @fn      		  - SPI_Init
  *
  * @brief             - This function initializes the SPI peripheral

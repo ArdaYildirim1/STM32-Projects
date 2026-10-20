@@ -69,7 +69,7 @@ int main(void)
 
 
 
-	//SPI_PeripheralControl(SPI2, DISABLE);
+
 
 
 	while(1){
