@@ -266,6 +266,29 @@ void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len)
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len)
 {
 
+	while(Len > 0)
+		{
+			while(SPI_GetFlagStatus(pSPIx, SPI_RXNE_FLAG) == FLAG_RESET);
+
+			if(pSPIx->SPI_CR1 & (1 << SPI_CR1_DFF))
+			{
+				//16-bit
+				*((uint16_t*)pRxBuffer) = pSPIx->SPI_DR;;
+
+				Len -=2;
+
+				pRxBuffer +=2;
+			}
+			else
+			{	// 8-bit
+				*pRxBuffer = pSPIx->SPI_DR ;
+				Len--;
+				pRxBuffer++;
+			}
+
+
+		}
+
 }
 
 

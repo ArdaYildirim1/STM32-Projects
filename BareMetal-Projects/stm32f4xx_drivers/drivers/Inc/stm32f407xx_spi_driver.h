@@ -138,6 +138,7 @@ uint8_t SPI_GetFlagStatus(SPI_RegDef_t *pSPIx, uint32_t FlagName);
  * SPI Related Status Flags Definitions
  */
 #define SPI_TXE_FLAG    (1 << SPI_SR_TXE)
+#define SPI_RXNE_FLAG	(1 << SPI_SR_RXNE)
 #define SPI_BUSY_FLAG    (1 << 7)
 
 
