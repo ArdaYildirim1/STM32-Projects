@@ -346,7 +346,7 @@ typedef struct
 #define SPI_CR2_SSOE		2
 #define SPI_CR2_FRF			4
 #define SPI_CR2_ERRIE		5
-#define SPI_CR2_RXNEIE		6
+#define SPI_CR2_RXEIE		6
 #define SPI_CR2_TXEIE		7
 
 /*
@@ -376,6 +376,9 @@ typedef struct
 #define IRQ_NO_EXTI9_5 		23
 #define IRQ_NO_EXTI15_10 	40
 
+#define IRQ_NO_SP1			35
+#define IRQ_NO_SP2			36
+#define IRQ_NO_SP3			51
 
 
 
@@ -385,6 +388,7 @@ typedef struct
 
 
 
+#define __weak   __attribute__((weak))
 
 
 
