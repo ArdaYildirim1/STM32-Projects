@@ -381,7 +381,11 @@ typedef struct
 #define IRQ_NO_SP3			51
 
 
-
+/*
+ * NVIC IRQ priority levels
+ */
+#define NVIC_IRQ_PRI0     0
+#define NVIC_IRQ_PRI15    15
 
 
 
