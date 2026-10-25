@@ -30,6 +30,34 @@
 #include <sys/time.h>
 #include <sys/times.h>
 
+#include <stdint.h>
+
+/////////////////////////////////////////////////////////////////
+// Implementation of printf-like feature using ARM Cortex-M4 ITM
+// Note: This does not work on ARM Cortex-M0/M0+
+/////////////////////////////////////////////////////////////////
+
+// Debug Exception and Monitor Control Register base address
+#define DEMCR                 *((volatile uint32_t*) 0xE000EDFCU)
+
+// ITM register addresses
+#define ITM_STIMULUS_PORT0    *((volatile uint32_t*) 0xE0000000)
+#define ITM_TRACE_EN          *((volatile uint32_t*) 0xE0000E00)
+
+void ITM_SendChar(uint8_t ch)
+{
+    // Enable TRCENA (enable the trace unit)
+    DEMCR |= (1 << 24);
+
+    // Enable stimulus port 0
+    ITM_TRACE_EN |= (1 << 0);
+
+    // Wait until stimulus port 0 is ready (FIFO status in bit 0)
+    while( !(ITM_STIMULUS_PORT0 & 1) );
+
+    // Write the character to stimulus port 0
+    ITM_STIMULUS_PORT0 = ch;
+}
 
 /* Variables */
 extern int __io_putchar(int ch) __attribute__((weak));
@@ -84,7 +112,7 @@ __attribute__((weak)) int _write(int file, char *ptr, int len)
 
   for (DataIdx = 0; DataIdx < len; DataIdx++)
   {
-    __io_putchar(*ptr++);
+	  ITM_SendChar(*ptr++);
   }
   return len;
 }
